@@ -31,6 +31,13 @@ namespace systemProjection
 			string mySqlConnection = Configuration.GetConnectionString("DefaultConnection");
 
 			services.AddDbContextPool<AppDbContext>(options => options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));
+
+			services.AddCors(o => o.AddPolicy("AllowAll", builder =>
+			{
+				builder.AllowAnyOrigin()
+					   .AllowAnyMethod()
+					   .AllowAnyHeader();
+			}));
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{
@@ -48,9 +55,17 @@ namespace systemProjection
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "projection v1"));
 			}
 
+			app.UseDefaultFiles();
+			app.UseStaticFiles();
+
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
+
+			app.UseCors(x => x
+			.AllowAnyOrigin()
+			.AllowAnyMethod()
+			.AllowAnyHeader());
 
 			app.UseAuthorization();
 

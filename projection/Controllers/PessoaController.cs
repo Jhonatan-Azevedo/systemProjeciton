@@ -21,6 +21,7 @@ namespace systemProjection.Controllers
         }
 
         // GET: api/Pessoas
+        [Route("GetPessoa")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Pessoa>>> GetPessoa()
         {
